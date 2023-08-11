@@ -13,8 +13,12 @@ export class MerkleTreeModel {
     this.root = this.tree.getRoot().toString("hex");
   }
 
-  // Function to generate proof for a specific leaf
   generateProof(leaf: Buffer) {
-    return this.tree.getProof(leaf);
+    const proof = this.tree.getProof(leaf);
+    return proof.map((p) => p.data);
+  }
+
+  verifyProof(proof: Buffer[], leaf: Buffer, expectedRoot: Buffer) {
+    return this.tree.verify(proof, leaf, expectedRoot);
   }
 }

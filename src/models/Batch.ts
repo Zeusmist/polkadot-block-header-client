@@ -6,8 +6,12 @@ export class Batch {
   merkleTree: MerkleTreeModel;
 
   constructor(headers: BlockHeader[]) {
-    this.headers = headers;
-    const leaves = headers.map((header) => Buffer.from(header.hash, "hex"));
+    const sortedHeaders = headers.sort((a, b) => a.number - b.number);
+
+    this.headers = sortedHeaders;
+    const leaves = sortedHeaders.map((header) =>
+      Buffer.from(header.hash, "hex")
+    );
     this.merkleTree = new MerkleTreeModel(leaves);
   }
 }
